@@ -2,4 +2,4 @@
 
 
 def slugify(title: str) -> str:
-    return title.strip().replace(" ", "-")
+    return title.strip().lower().replace(" ", "-")
