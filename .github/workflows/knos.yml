@@ -1,0 +1,111 @@
+# .github/workflows/knos.yml - Knos on GitHub, with no secret, wallet or faucet in this repo.
+#
+# "Protect this repo" (https://drexthealpha.github.io/Knos/) prefills this file. Then:
+#   1. A maintainer comments on issue N (or writes the same line in a new issue's description):
+#          /knos bounty <amount>
+#      fund.yml asks GitHub for a token that says so; relay.yml posts it; anyone (Knos's always-on worker does) carries
+#      it to Solana, where knos-oidc checks GitHub's signature and knos-pay opens the bounty. Knos pays the gas.
+#   2. Someone opens a pull request whose body says "Fixes #N". No wallet, no address. prove.yml's check job runs
+#      on it: the repo's own rules, and whether a "tests pass" in its description is true at its head commit.
+#   3. A maintainer merges it. prove.yml asks GitHub for a token that says "pull request by GitHub user U closing
+#      issue N was merged"; on Solana the bounty is held for U's GitHub account and released an hour later (until
+#      then /knos veto on the issue takes it back; "/knos bounty <amount> review 0" pays at once). U claims it
+#      whenever they like, to any address, with a token from a workflow in a repository U owns
+#      (https://drexthealpha.github.io/Knos/#claim).
+#   Optional, pay without waiting for a merge: put acceptance checks for issue N in .knos/acceptance/N/ on the default
+#   branch before funding. prove.yml then runs them against each pull request in a sandbox, in a job with no token
+#   and no secret, and only if they pass does a second job, which runs no pull request code, mint the token. That
+#   payment waits a review window (default 24 hours) in which /knos veto takes it back.
+#
+# Security model:
+#   - pull_request_target runs THIS file from the base branch, so a pull request cannot edit what runs here. This file
+#     checks out nothing and reads the pull request body only through environment variables.
+#   - Knos's workflows are referenced by full commit sha. A bounty pins that sha on chain when it is funded, and
+#     knos-pay refuses a token from any other workflow or any other commit of these. The judge prove.yml runs is
+#     the code at that same commit; this file cannot choose another.
+#   - /knos bounty and /knos veto count only from OWNER, MEMBER or COLLABORATOR (fund.yml).
+#   - Tokens posted as comments name one action each and are accepted for at most an hour (relay.yml).
+#   - To make the Knos check required before merge: Settings > Rules > New branch ruleset > Require status checks >
+#     add "prove / check" (the Protect page links there).
+name: knos
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, edited, closed]
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened]
+
+permissions: {}
+
+jobs:
+  # ---- /knos bounty <amount>, /knos veto on an issue ---------------------------------------------------------------
+  fund:
+    if: >-
+      (github.event_name == 'issue_comment' && !github.event.issue.pull_request &&
+       (startsWith(github.event.comment.body, '/knos bounty ') || startsWith(github.event.comment.body, '/knos veto'))) ||
+      (github.event_name == 'issues' && contains(github.event.issue.body, '/knos bounty '))
+    permissions:
+      contents: read
+      id-token: write
+    uses: drexthealpha/knos-rc/.github/workflows/fund.yml@59a849071a1b5d0ef530de652ae0f333c117f2b0
+
+  fund-relay:
+    needs: fund
+    if: needs.fund.outputs.issue != ''
+    permissions:
+      issues: write
+      pull-requests: write
+    uses: drexthealpha/knos-rc/.github/workflows/relay.yml@59a849071a1b5d0ef530de652ae0f333c117f2b0
+    with:
+      kind: ${{ needs.fund.outputs.kind }}
+      number: ${{ fromJSON(needs.fund.outputs.issue) }}
+
+  # ---- a pull request that says "Fixes #N" -------------------------------------------------------------------------
+  job:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    outputs:
+      issue: ${{ steps.id.outputs.issue }}
+    steps:
+      - id: id
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          issue=$(printf '%s\n' "$BODY" | grep -oiE '\b(fixes|closes|resolves)[[:space:]]+#[0-9]+' | head -1 | grep -oE '[0-9]+$' || true)
+          echo "issue=$issue" >> "$GITHUB_OUTPUT"
+          echo "issue=#$issue"
+
+  prove:
+    needs: job
+    if: needs.job.outputs.issue != ''
+    permissions:
+      contents: read
+      checks: read
+      id-token: write
+    uses: drexthealpha/knos-rc/.github/workflows/prove.yml@59a849071a1b5d0ef530de652ae0f333c117f2b0
+    with:
+      issue: ${{ needs.job.outputs.issue }}
+
+  prove-relay:
+    needs: prove
+    if: needs.prove.outputs.passed == 'true'
+    permissions:
+      issues: write
+      pull-requests: write
+    uses: drexthealpha/knos-rc/.github/workflows/relay.yml@59a849071a1b5d0ef530de652ae0f333c117f2b0
+    with:
+      kind: proof
+      number: ${{ github.event.pull_request.number }}
+
+  prove-refused:
+    needs: [job, prove]
+    if: always() && needs.job.outputs.issue != '' && needs.prove.result == 'failure'
+    permissions:
+      issues: write
+      pull-requests: write
+    uses: drexthealpha/knos-rc/.github/workflows/relay.yml@59a849071a1b5d0ef530de652ae0f333c117f2b0
+    with:
+      kind: refused
+      number: ${{ github.event.pull_request.number }}
