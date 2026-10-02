@@ -20,4 +20,4 @@ jobs:
     permissions:
       contents: read
       checks: read
-    uses: drexthealpha/knos-rc/.github/workflows/check.yml@6c6e69e64888bcd38850b11c7fb98a3b8c8106bb
+    uses: drexthealpha/Knos/.github/workflows/check.yml@f3dfd3dca73b91d7b3b503e61edc0575e351b99d

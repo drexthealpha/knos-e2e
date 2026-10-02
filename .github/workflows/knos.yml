@@ -51,7 +51,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: drexthealpha/knos-rc/.github/workflows/fund.yml@6c6e69e64888bcd38850b11c7fb98a3b8c8106bb
+    uses: drexthealpha/Knos/.github/workflows/fund.yml@f3dfd3dca73b91d7b3b503e61edc0575e351b99d
 
   fund-relay:
     needs: fund
@@ -59,7 +59,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    uses: drexthealpha/knos-rc/.github/workflows/relay.yml@6c6e69e64888bcd38850b11c7fb98a3b8c8106bb
+    uses: drexthealpha/Knos/.github/workflows/relay.yml@f3dfd3dca73b91d7b3b503e61edc0575e351b99d
     with:
       kind: ${{ needs.fund.outputs.kind }}
       number: ${{ fromJSON(needs.fund.outputs.issue) }}
@@ -87,7 +87,7 @@ jobs:
       checks: read
       issues: read
       id-token: write
-    uses: drexthealpha/knos-rc/.github/workflows/prove.yml@6c6e69e64888bcd38850b11c7fb98a3b8c8106bb
+    uses: drexthealpha/Knos/.github/workflows/prove.yml@f3dfd3dca73b91d7b3b503e61edc0575e351b99d
     with:
       issue: ${{ needs.job.outputs.issue }}
 
@@ -97,7 +97,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    uses: drexthealpha/knos-rc/.github/workflows/relay.yml@6c6e69e64888bcd38850b11c7fb98a3b8c8106bb
+    uses: drexthealpha/Knos/.github/workflows/relay.yml@f3dfd3dca73b91d7b3b503e61edc0575e351b99d
     with:
       kind: proof
       number: ${{ github.event.pull_request.number }}
@@ -108,7 +108,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    uses: drexthealpha/knos-rc/.github/workflows/relay.yml@6c6e69e64888bcd38850b11c7fb98a3b8c8106bb
+    uses: drexthealpha/Knos/.github/workflows/relay.yml@f3dfd3dca73b91d7b3b503e61edc0575e351b99d
     with:
       kind: refused
       number: ${{ github.event.pull_request.number }}
