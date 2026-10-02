@@ -44,9 +44,9 @@ jobs:
           end=$(( $(date +%s) + 900 ))
           line=""
           while [ "$(date +%s)" -lt "$end" ]; do
-            log=$(gh api "repos/drexthealpha/knos-rc/issues?labels=knos-relay&state=open&per_page=1" --jq '.[0].number' 2>/dev/null || true)
+            log=$(gh api "repos/drexthealpha/Knos/issues?labels=knos-relay&state=open&per_page=1" --jq '.[0].number' 2>/dev/null || true)
             if [ -n "$log" ]; then
-              line=$(gh api "repos/drexthealpha/knos-rc/issues/$log/comments?per_page=100&since=$(date -u -d '-30 min' +%FT%TZ)" \
+              line=$(gh api "repos/drexthealpha/Knos/issues/$log/comments?per_page=100&since=$(date -u -d '-30 min' +%FT%TZ)" \
                        --jq '.[].body' 2>/dev/null | grep -F " $id " | tail -1 || true)
               [ -n "$line" ] && break
             fi
