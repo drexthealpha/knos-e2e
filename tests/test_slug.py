@@ -7,3 +7,7 @@ def test_spaces_become_hyphens():
 
 def test_case_is_lowered():
     assert slugify("KNOS") == "knos"
+
+
+def test_runs_of_spaces_become_one_hyphen():
+    assert slugify("a   b") == "a-b"

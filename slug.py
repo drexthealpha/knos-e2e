@@ -2,4 +2,4 @@
 
 
 def slugify(title: str) -> str:
-    return "-".join(title.split())
+    return "-".join(title.lower().split())
