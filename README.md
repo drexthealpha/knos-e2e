@@ -4,6 +4,6 @@ A tiny repository used to rehearse Knos end to end on Solana devnet: an issue is
 request is checked, merged and paid to its author's GitHub account. Nothing here is real money.
 
 
-Run `pytest` from the repository root.
+Run `pytest` from the repository root. The tests are in the `tests/` folder.
 
 Contributions: open a pull request that closes an issue.
