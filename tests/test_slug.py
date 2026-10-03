@@ -11,3 +11,7 @@ def test_case_is_lowered():
 
 def test_runs_of_spaces_become_one_hyphen():
     assert slugify("a   b") == "a-b"
+
+
+def test_no_hyphen_at_either_end():
+    assert slugify("-a b-") == "a-b"
