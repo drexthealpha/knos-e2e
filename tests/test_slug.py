@@ -20,3 +20,7 @@ def test_no_hyphen_at_either_end():
 def test_a_blank_title_gives_an_empty_slug():
     assert slugify("") == ""
     assert slugify("   ") == ""
+
+
+def test_punctuation_is_dropped():
+    assert slugify("Hello, World!") == "hello-world"
