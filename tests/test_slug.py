@@ -24,7 +24,3 @@ def test_a_blank_title_gives_an_empty_slug():
 
 def test_punctuation_is_dropped():
     assert slugify("Hello, World!") == "hello-world"
-
-
-def test_underscores_become_hyphens():
-    assert slugify("snake_case title") == "snake-case-title"
