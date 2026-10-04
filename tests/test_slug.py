@@ -24,3 +24,7 @@ def test_a_blank_title_gives_an_empty_slug():
 
 def test_punctuation_is_dropped():
     assert slugify("Hello, World!") == "hello-world"
+
+
+def test_a_run_of_hyphens_becomes_one():
+    assert slugify("a - b") == "a-b"
