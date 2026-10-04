@@ -1,5 +1,7 @@
 """Turn a title into a URL slug."""
+import re
 
 
 def slugify(title: str) -> str:
-    return "-".join(title.lower().split()).strip("-")
+    words = re.sub(r"[^a-z0-9\s-]", "", title.lower()).split()
+    return "-".join(words).strip("-")
