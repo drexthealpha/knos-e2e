@@ -1,0 +1,30 @@
+# .github/workflows/knos-verify.yml: integrations/workflows/knos-verify.yml of Knos 0.3.15, for its first real run.
+# REHEARSAL, two changes: the action is taken from the staging tree drexthealpha/knos-rc at a full commit (the release
+# tag does not exist yet), and, because knos 0.3.15 is not on PyPI yet, the first step builds that commit's wheel and
+# points uv at it (UV_FIND_LINKS), so the action's own `knos==0.3.15` resolves to it. The action itself is unchanged.
+name: knos-verify
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, closed]
+permissions: {}
+jobs:
+  knos-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      checks: read
+      statuses: read
+      pull-requests: read
+    outputs:
+      passed: ${{ steps.knos.outputs.passed }}
+      verdict: ${{ steps.knos.outputs.verdict }}
+    steps:
+      - name: "REHEARSAL: knos 0.3.15 built from drexthealpha/knos-rc@74804c4 (not on PyPI yet)"
+        run: |
+          python3 -m pip wheel -q --no-deps -w "$RUNNER_TEMP/wheels" "git+https://github.com/drexthealpha/knos-rc@74804c4733ee840bd554ecce0576bdff4d5a2fe1"
+          ls "$RUNNER_TEMP/wheels"
+          echo "UV_FIND_LINKS=$RUNNER_TEMP/wheels" >> "$GITHUB_ENV"
+      - id: knos
+        uses: drexthealpha/knos-rc/.github/actions/knos-verify@74804c4733ee840bd554ecce0576bdff4d5a2fe1
+        with:
+          checks: test          # the names of the checks a bounty's work must pass, as GitHub shows them
