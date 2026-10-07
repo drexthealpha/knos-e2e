@@ -1,5 +1,7 @@
-"""Count the vowels of a text."""
+"""vowels(text): how many of a, e, i, o, u (upper or lower case) a text holds; y is not counted."""
+
+VOWELS = frozenset("aeiouAEIOU")
 
 
-def count_vowels(text: str) -> int:
-    return sum(1 for ch in text.lower() if ch in "aeiou")
+def vowels(text: str) -> int:
+    return sum(1 for ch in text if ch in VOWELS)
