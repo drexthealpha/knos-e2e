@@ -54,10 +54,9 @@ jobs:
           python-version: "3.12"
           enable-cache: false
           ignore-empty-workdir: true
-      # knos-e2e only: 0.3.15 is not on PyPI yet, so this installs the 0.3.15 release tree from the staging repository.
-      # This run is Knos's own account: it is not a reproduction, and nothing from it goes into reproductions/.
-      - name: install knos, the 0.3.15 release tree (staging)
-        run: uv tool install --no-config "knos @ git+https://github.com/drexthealpha/knos-rc@74804c4733ee840bd554ecce0576bdff4d5a2fe1"
+      # knos-e2e only: this run is Knos's own account: it is not a reproduction, and nothing from it goes into reproductions/.
+      - name: install knos, the released wheel
+        run: uv tool install --no-config "knos==0.3.19"
       - name: knos reproduce
         id: report
         env:

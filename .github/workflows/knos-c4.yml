@@ -20,8 +20,8 @@ jobs:
           python-version: "3.12"
           enable-cache: false
           ignore-empty-workdir: true
-      - name: install knos, the 0.3.15 tree with the staging fixes (knos-rc bec64d0)
-        run: uv tool install --no-config "knos @ git+https://github.com/drexthealpha/knos-rc@bec64d03a5da39e85a075e1825c829ab9bc1e26d"
+      - name: install knos, the released wheel (0.3.19)
+        run: uv tool install --no-config "knos==0.3.19"
       - name: the commands
         env:
           GH_TOKEN: ${{ github.token }}
