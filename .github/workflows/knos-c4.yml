@@ -20,8 +20,8 @@ jobs:
           python-version: "3.12"
           enable-cache: false
           ignore-empty-workdir: true
-      - name: install knos, the released wheel (0.3.19)
-        run: uv tool install --no-config "knos==0.3.19"
+      - name: install knos, the released wheel (0.3.20)
+        run: uv tool install --no-config "knos==0.3.20"
       - name: the commands
         env:
           GH_TOKEN: ${{ github.token }}
