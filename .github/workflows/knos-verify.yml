@@ -1,4 +1,4 @@
-# .github/workflows/knos-verify.yml: integrations/workflows/knos-verify.yml of Knos 0.3.20, the released action at the
+# .github/workflows/knos-verify.yml: integrations/workflows/knos-verify.yml of Knos 0.3.21, the released action at the
 # v0.3.21 commit (it installs knos==0.3.21 from PyPI itself). It was the 0.3.15 rehearsal copy, which took the action
 # and a wheel from the staging repository; that repository is private now. One addition: it can also be started by
 # hand for a named pull request (workflow_dispatch), to give the verdict of a pull request that is already closed.
