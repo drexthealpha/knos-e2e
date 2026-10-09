@@ -1,5 +1,5 @@
-# .github/workflows/knos-verify.yml: integrations/workflows/knos-verify.yml of Knos 0.3.22, the released action at the
-# v0.3.22 commit (it installs knos==0.3.22 from PyPI itself). It was the 0.3.15 rehearsal copy, which took the action
+# .github/workflows/knos-verify.yml: integrations/workflows/knos-verify.yml of Knos 0.3.23, the released action at the
+# v0.3.23 commit (it installs knos==0.3.23 from PyPI itself). It was the 0.3.15 rehearsal copy, which took the action
 # and a wheel from the staging repository; that repository is private now. One addition: it can also be started by
 # hand for a named pull request (workflow_dispatch), to give the verdict of a pull request that is already closed.
 name: knos-verify
@@ -26,7 +26,7 @@ jobs:
       verdict: ${{ steps.knos.outputs.verdict }}
     steps:
       - id: knos
-        uses: drexthealpha/Knos/.github/actions/knos-verify@c4350c972c52c5a1b727910d21d90890c53cf0eb # v0.3.22
+        uses: drexthealpha/Knos/.github/actions/knos-verify@852e6135822341a0c1683f2c11b107f61955ae63 # v0.3.23
         with:
           pull-request: ${{ inputs.pull-request || github.event.pull_request.number }}
           checks: test          # the names of the checks a bounty's work must pass, as GitHub shows them

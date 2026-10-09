@@ -89,7 +89,7 @@ jobs:
       statuses: read
       actions: read
       id-token: write
-    uses: drexthealpha/knos-workflows/.github/workflows/fund.yml@b6d4df883e87d25afa28e5496402e95a8c272076
+    uses: drexthealpha/knos-workflows/.github/workflows/fund.yml@5b26b1cddeae766b0693fa3eafdd9e44a7755481
 
   # ---- a merge; a run started by hand; /knos settle or a funded /knos tip on a pull request ---------------------------
   settle:
@@ -108,7 +108,7 @@ jobs:
       statuses: read
       actions: read
       id-token: write
-    uses: drexthealpha/knos-workflows/.github/workflows/prove.yml@b6d4df883e87d25afa28e5496402e95a8c272076
+    uses: drexthealpha/knos-workflows/.github/workflows/prove.yml@5b26b1cddeae766b0693fa3eafdd9e44a7755481
 
   # ---- the check on a pull request has finished (only with knos-check.yml installed) ----------------------------------
   # The same permissions as settle: GitHub starts a called workflow only when the calling job grants what every job
@@ -126,4 +126,4 @@ jobs:
       statuses: read
       actions: read
       id-token: write
-    uses: drexthealpha/knos-workflows/.github/workflows/prove.yml@b6d4df883e87d25afa28e5496402e95a8c272076
+    uses: drexthealpha/knos-workflows/.github/workflows/prove.yml@5b26b1cddeae766b0693fa3eafdd9e44a7755481
