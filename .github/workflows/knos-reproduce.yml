@@ -56,7 +56,7 @@ jobs:
           ignore-empty-workdir: true
       # knos-e2e only: this run is Knos's own account: it is not a reproduction, and nothing from it goes into reproductions/.
       - name: install knos, the released wheel
-        run: uv tool install --no-config "knos==0.3.24"
+        run: uv tool install --no-config "knos==0.3.25"
       - name: knos reproduce
         id: report
         env:
