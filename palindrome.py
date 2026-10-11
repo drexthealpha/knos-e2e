@@ -2,5 +2,5 @@
 
 
 def is_palindrome(text: str) -> bool:
-    letters = "".join(text.lower().split())
+    letters = "".join(c for c in text.lower() if c.isalnum())
     return letters == letters[::-1]
