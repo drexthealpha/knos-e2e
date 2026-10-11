@@ -7,3 +7,7 @@ def test_case_and_spaces_are_ignored():
 
 def test_not_a_palindrome():
     assert not is_palindrome("knos")
+
+
+def test_punctuation_is_ignored():
+    assert is_palindrome("Was it a car or a cat I saw?")
