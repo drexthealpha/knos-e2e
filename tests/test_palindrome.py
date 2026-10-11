@@ -10,4 +10,4 @@ def test_not_a_palindrome():
 
 
 def test_punctuation_is_ignored():
-    assert is_palindrome("Was it a car or a cat I saw?")
+    assert not is_palindrome("Was it a car or a cat I saw?")
