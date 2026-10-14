@@ -90,6 +90,8 @@ jobs:
       actions: read
       id-token: write
     uses: drexthealpha/knos-workflows/.github/workflows/fund.yml@96b243f1b1dd5c975a0318dd9709a0da22b98dcd
+    secrets:
+      KNOS_RELAY_KEY: ${{ secrets.KNOS_RELAY_KEY }}       # optional: when the repository has none, this passes nothing
 
   # ---- a merge; a run started by hand; /knos settle or a funded /knos tip on a pull request ---------------------------
   settle:
@@ -109,6 +111,8 @@ jobs:
       actions: read
       id-token: write
     uses: drexthealpha/knos-workflows/.github/workflows/prove.yml@96b243f1b1dd5c975a0318dd9709a0da22b98dcd
+    secrets:
+      KNOS_RELAY_KEY: ${{ secrets.KNOS_RELAY_KEY }}       # optional, as above
 
   # ---- the check on a pull request has finished (only with knos-check.yml installed) ----------------------------------
   # The same permissions as settle: GitHub starts a called workflow only when the calling job grants what every job
@@ -127,3 +131,5 @@ jobs:
       actions: read
       id-token: write
     uses: drexthealpha/knos-workflows/.github/workflows/prove.yml@96b243f1b1dd5c975a0318dd9709a0da22b98dcd
+    secrets:
+      KNOS_RELAY_KEY: ${{ secrets.KNOS_RELAY_KEY }}       # optional, as above
