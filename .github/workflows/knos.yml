@@ -50,6 +50,8 @@
 # the pay token only from the same commit. They accept no inputs, so this file cannot change what they do:
 # editing the conditions below only changes when they run. Keep the three names that start with "knos": by them
 # Knos tells its own jobs from the checks a bounty can require.
+# Two homes (15 Oct 2026): issues labelled knos-home, and pushes whose commit message has [knos-home], are Knos's from
+# the new home drexthealpha/Knos (knos-home.yml); this file skips exactly those and does everything else as before.
 name: knos
 
 on:
@@ -77,10 +79,11 @@ jobs:
   command:
     name: knos command
     if: >-
+      !contains(github.event.issue.labels.*.name, 'knos-home') && (
       (github.event_name == 'issue_comment' &&
        (startsWith(github.event.comment.body, '/knos') || contains(github.event.comment.body, fromJSON('"\n/knos"')))) ||
       (github.event_name == 'issues' &&
-       (contains(github.event.issue.body, '/knos fund') || contains(github.event.issue.body, '/knos bounty')))
+       (contains(github.event.issue.body, '/knos fund') || contains(github.event.issue.body, '/knos bounty'))))
     permissions:
       contents: read
       issues: write
@@ -97,7 +100,8 @@ jobs:
     needs: command    # after the command, when there was one: it says when a payment follows (a tip is funded first)
     if: >-
       !cancelled() && (
-        (github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) ||
+        (github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) &&
+         !contains(github.event.head_commit.message, '[knos-home]')) ||
         github.event_name == 'workflow_dispatch' ||
         (github.event_name == 'issue_comment' && needs.command.outputs.settle != ''))
     permissions:
