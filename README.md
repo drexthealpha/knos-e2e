@@ -9,5 +9,3 @@ request is checked, merged and paid to its author's GitHub account. Nothing here
 Run `pytest` from the repository root. The tests are in the `tests/` folder.
 
 Contributions: open a pull request that closes an issue.
-
-Checked on 3 Nov 2026: a pull request here runs knos-check.yml, which calls the published check.yml at 96b243f1.

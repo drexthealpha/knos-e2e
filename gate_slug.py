@@ -4,3 +4,4 @@ import re
 def gate_slug(s):
     """A URL slug of s (synthetic demo for Knos Gate bounties mode)."""
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+# 3 Nov 2026: a pull request here runs the published check.yml at 96b243f1.
