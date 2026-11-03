@@ -9,3 +9,5 @@ request is checked, merged and paid to its author's GitHub account. Nothing here
 Run `pytest` from the repository root. The tests are in the `tests/` folder.
 
 Contributions: open a pull request that closes an issue.
+
+<!-- trigger check 3 Nov 2026 -->
